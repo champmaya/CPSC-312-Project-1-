@@ -154,7 +154,8 @@ start lst r =
              start lst' 0
              else if (line == "3") then do -- quits the games and gives option to save
                  quitGame lst r
-             else if (line == "4") then do -- loads the game previously saved 
+             else if (line == "4") then do -- loads the game previously saved
+                  putStrLn("Loading your previously saved game.")
                   load 
          else do -- error handling 
            putStrLn "ERROR: please enter either 0, 1, 2, or 3\n"
@@ -163,15 +164,15 @@ start lst r =
 -- loads the list of rooms saved as JSON/AESON format in the filename savegame.txt 
 load =
    do
-   putStrLn("Loading your previously saved game.")
    lst <- readFile "savegame.txt" -- reads file
    let new = decode lst -- decodes into the Room data type
    case new of -- need to account for the fact that decode returns Maybe 
       Nothing -> 
          error "Incorrect file format"
-      Just n ->
-         putStrLn("Your game has been loaded, have fun playing!") 
+      Just n -> 
          start n 0
+
+
 
 -- quits the game and gives the user an option to save their progress
 quitGame:: [Room] -> Int -> IO()
@@ -182,7 +183,7 @@ quitGame lst n =
        if (ans == "0") then do 
             putStrLn("\nSaved your current progress to file savegame.txt")
             putStrLn("\nEnding Game, thanks for playing!")
-            writeFile "savegame.txt" (encode save) 
+            writeFile "savegame.txt" (encode lst) 
             return()
             else if (ans == "1") then do
                putStrLn("Ending Game, thanks for playing!") 
