@@ -14,4 +14,6 @@ To begin:
 - ghci
 - :load EncounterTracker.hs
 - begin
+
+
 Have fun!
